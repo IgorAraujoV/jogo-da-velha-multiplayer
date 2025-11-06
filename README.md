@@ -2,6 +2,8 @@
 
 Aplicação React de Jogo da Velha multiplayer desenvolvida com Supabase (Auth, Database e Realtime).
 
+📖 **Para documentação completa e detalhada, consulte [DOCUMENTATION.md](./DOCUMENTATION.md)**
+
 ## Funcionalidades
 
 - ✅ Autenticação de usuários (cadastro e login)
