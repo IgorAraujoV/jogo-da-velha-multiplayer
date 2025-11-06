@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Trabalho — Jogo da Velha Multiplayer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .requisitos {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .requisitos h3 {
+            margin-top: 0;
+        }
+
+        .arquitetura-box {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .arquitetura-box h3 {
+            color: #667eea;
+        }
+
+        /* Protótipos de Telas */
+        .prototipos-section {
+            background: #f0f0f0;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .prototipos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .tela-prototipo {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .tela-prototipo::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #667eea;
+        }
+
+        .tela-titulo {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            margin: -20px -20px 15px -20px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .tela-conteudo {
+            min-height: 200px;
+        }
+
+        /* Login Screen */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-field {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+        }
+
+        /* Lobby Screen */
+        .lobby-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            background: #764ba2;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #28a745;
+            color: white;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        /* Game Screen */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin: 15px 0;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            background: #e8f4f8;
+        }
+
+        .cell.x {
+            color: #667eea;
+        }
+
+        .cell.o {
+            color: #764ba2;
+        }
+
+        .game-info {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .player-turn {
+            background: #fff3cd;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        /* Result Screen */
+        .result-message {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .result-winner {
+            color: #28a745;
+        }
+
+        .result-draw {
+            color: #ffc107;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            font-size: 30px;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flow-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .flow-row {
+                flex-direction: column;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plano de Trabalho — Jogo da Velha Multiplayer com Supabase</h1>
+
+        <!-- 1. Introdução -->
+        <section>
+            <h2>1. Introdução</h2>
+            <p>Este plano descreve o desenvolvimento de um Jogo da Velha multiplayer utilizando o Supabase como plataforma Backend-as-a-Service (BaaS). O projeto inclui autenticação, persistência de dados e sincronização em tempo real, com foco em organização, definição de papéis, arquitetura, modelagem e entregáveis necessários para execução.</p>
+        </section>
+
+        <!-- 2. Objetivo -->
+        <section>
+            <h2>2. Objetivo</h2>
+            <p>O objetivo é definir de forma estruturada:</p>
+            <ul>
+                <li><strong>Escopo</strong></li>
+                <li><strong>Formação de grupos e papéis</strong></li>
+                <li><strong>Requisitos funcionais e não funcionais</strong></li>
+                <li><strong>Arquitetura geral</strong></li>
+                <li><strong>Modelagem de dados</strong></li>
+                <li><strong>Cronograma</strong></li>
+                <li><strong>Entregáveis</strong></li>
+            </ul>
+        </section>
+
+        <!-- 3. Formação de Grupo e Papéis -->
+        <section>
+            <h2>3. Formação de Grupo e Papéis</h2>
+            <ul>
+                <li><strong>Gerente de Projeto</strong> — organiza o grupo, tarefas e prazos.</li>
+                <li><strong>Desenvolvedor Frontend</strong> — telas, interação e integração com Realtime.</li>
+                <li><strong>Desenvolvedor Backend / Banco</strong> — modelagem de dados e lógica no Supabase.</li>
+                <li><strong>DevOps & Versionamento</strong> — repositório, branches e integrações.</li>
+            </ul>
+        </section>
+
+        <!-- 4. Escopo do Jogo -->
+        <section>
+            <h2>4. Escopo do Jogo</h2>
+            <p><strong>Inclui:</strong></p>
+            <ul>
+                <li>Tela de login</li>
+                <li>Tela de lobby com suporte a multiplayer</li>
+                <li>Execução de partida do jogo da velha com sincronização em tempo real (Supabase Realtime)</li>
+                <li>Registro do resultado da partida</li>
+            </ul>
+            <p><strong>Não faz parte deste escopo:</strong></p>
+            <ul>
+                <li>Chat</li>
+                <li>Ranking avançado</li>
+                <li>Modos de jogo complexos</li>
+            </ul>
+        </section>
+
+        <!-- 5. Requisitos Funcionais -->
+        <section>
+            <h2>5. Requisitos Funcionais</h2>
+            <div class="requisitos">
+                <ul>
+                    <li><strong>RF1:</strong> Autenticar usuário (login/logout)</li>
+                    <li><strong>RF2:</strong> Criar conta de usuário</li>
+                    <li><strong>RF3:</strong> Criar ou entrar em partida (matchmaking)</li>
+                    <li><strong>RF4:</strong> Sincronizar estado da partida em tempo real entre dois jogadores</li>
+                    <li><strong>RF5:</strong> Exibir o estado atualizado do tabuleiro na interface</li>
+                    <li><strong>RF6:</strong> Validar jogada (verificar se célula está vazia e se é o turno do jogador)</li>
+                    <li><strong>RF7:</strong> Alternar turnos entre jogadores (X e O)</li>
+                    <li><strong>RF8:</strong> Detectar vitória (linha, coluna ou diagonal completa)</li>
+                    <li><strong>RF9:</strong> Detectar empate (tabuleiro completo sem vencedor)</li>
+                    <li><strong>RF10:</strong> Registrar o resultado da partida (vitória/empate/derrota)</li>
+                    <li><strong>RF11:</strong> Armazenar histórico básico das partidas</li>
+                    <li><strong>RF12:</strong> Visualizar estatísticas do perfil do jogador (vitórias, empates, derrotas)</li>
+                    <li><strong>RF13:</strong> Detectar desconexão de jogador</li>
+                    <li><strong>RF14:</strong> Permitir reconexão à partida em andamento</li>
+                    <li><strong>RF15:</strong> Cancelar ou sair de partida</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 6. Requisitos Não-Funcionais -->
+        <section>
+            <h2>6. Requisitos Não-Funcionais</h2>
+            <div class="requisitos">
+                <ul>
+                    <li><strong>RNF1:</strong> Baixa latência de atualização durante o jogo (< 500ms para sincronização de movimentos)</li>
+                    <li><strong>RNF2:</strong> Escalabilidade horizontal para suportar múltiplas partidas simultâneas (mínimo 50 partidas/100 jogadores)</li>
+                    <li><strong>RNF3:</strong> Observabilidade: logging estruturado, métricas em tempo real e dashboard de monitoramento</li>
+                    <li><strong>RNF4:</strong> Alta disponibilidade (99%+ uptime)</li>
+                    <li><strong>RNF5:</strong> Segurança: autenticação JWT, autorização baseada em roles e validação de entrada</li>
+                    <li><strong>RNF6:</strong> Deploy simples e reprodutível com CI/CD automatizado</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 7. Arquitetura -->
+        <section>
+            <h2>7. Arquitetura (alto nível)</h2>
+            <div class="arquitetura-box">
+                <h3>Frontend (React)</h3>
+                <ul>
+                    <li>Interface do usuário</li>
+                    <li>Gerenciamento do estado da partida</li>
+                    <li>Assinatura de eventos via Supabase Realtime</li>
+                </ul>
+            </div>
+            <div class="arquitetura-box">
+                <h3>Supabase</h3>
+                <ul>
+                    <li>Autenticação (Auth)</li>
+                    <li>Banco de dados (armazenamento de usuários, partidas e movimentos)</li>
+                    <li>Realtime para sincronização da partida</li>
+                </ul>
+            </div>
+            <h3>Fluxo Geral</h3>
+            <ol>
+                <li>Usuário realiza login</li>
+                <li>Entra no lobby/matchmaking</li>
+                <li>Criação/entrada em partida</li>
+                <li>Supabase Realtime mantém o estado do tabuleiro sincronizado</li>
+                <li>Resultado é registrado ao final da partida</li>
+            </ol>
+        </section>
+
+        <!-- 8. Modelagem de Dados -->
+        <section>
+            <h2>8. Modelagem de Dados (alto nível)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Entidade</th>
+                        <th>Atributos Principais</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Usuário</strong></td>
+                        <td>identificador, nome, estatísticas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Partida</strong></td>
+                        <td>jogadores, turno, status</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Movimento</strong></td>
+                        <td>jogador, posição no tabuleiro</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 9. Fluxo de Trabalho -->
+        <section>
+            <h2>9. Fluxo de Trabalho e Versionamento</h2>
+            <ul>
+                <li><strong>Branches:</strong> main, dev, feature/*</li>
+                <li><strong>Commits:</strong> padronizados e claros</li>
+            </ul>
+        </section>
+
+        <!-- 10. Cronograma -->
+        <section>
+            <h2>10. Cronograma — 2 semanas</h2>
+            <ol>
+                <li>Setup do projeto e ambiente</li>
+                <li>Modelagem de dados e configuração do Supabase</li>
+                <li>Telas principais</li>
+                <li>Integração Realtime e lógica de jogo</li>
+                <li>Ajustes finais</li>
+                <li>Documentação</li>
+            </ol>
+        </section>
+
+        <!-- 11. Entregáveis -->
+        <section>
+            <h2>11. Entregáveis</h2>
+            <ul>
+                <li>Documento técnico</li>
+                <li>Repositório organizado</li>
+                <li>Vídeo/Apresentação</li>
+            </ul>
+        </section>
+
+        <!-- Protótipos de Telas -->
+        <section class="prototipos-section">
+            <h2>Protótipos de Telas — Fluxo do Jogo</h2>
+            <p style="text-align: center; margin-bottom: 30px;">Visualização do fluxo completo do usuário através das telas do sistema</p>
+            
+            <div class="flow-container">
+                <!-- Tela 1: Login -->
+                <div class="flow-row">
+                    <div class="tela-prototipo">
+                        <div class="tela-titulo">1. Tela de Login</div>
+                        <div class="tela-conteudo">
+                            <h3 style="text-align: center; margin-bottom: 20px;">Jogo da Velha</h3>
+                            <div class="login-form">
+                                <input type="email" class="input-field" placeholder="Email" value="usuario@exemplo.com">
+                                <input type="password" class="input-field" placeholder="Senha" value="••••••••">
+                                <button class="btn">Entrar</button>
+                                <button class="btn btn-secondary" style="margin-top: 5px;">Criar Conta</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <!-- Tela 2: Lobby -->
+                <div class="flow-row">
+                    <div class="tela-prototipo">
+                        <div class="tela-titulo">2. Lobby / Matchmaking</div>
+                        <div class="tela-conteudo">
+                            <h3 style="text-align: center; margin-bottom: 15px;">Bem-vindo, João!</h3>
+                            <div class="lobby-actions">
+                                <button class="btn">Criar Partida</button>
+                                <button class="btn btn-secondary">Buscar Partida</button>
+                            </div>
+                            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
+                                <p style="font-size: 12px; margin-bottom: 5px;"><strong>Estatísticas:</strong></p>
+                                <p style="font-size: 12px;">Vitórias: 5 | Empates: 2 | Derrotas: 3</p>
+                            </div>
+                            <div class="status-badge">Online</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <!-- Tela 3: Aguardando Jogador -->
+                <div class="flow-row">
+                    <div class="tela-prototipo">
+                        <div class="tela-titulo">3. Aguardando Jogador</div>
+                        <div class="tela-conteudo">
+                            <h3 style="text-align: center; margin: 20px 0;">Aguardando oponente...</h3>
+                            <div style="text-align: center; margin: 30px 0;">
+                                <div style="display: inline-block; width: 50px; height: 50px; border: 3px solid #667eea; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                            </div>
+                            <p style="text-align: center; font-size: 12px; color: #666;">Procurando jogador disponível...</p>
+                            <button class="btn btn-secondary" style="margin-top: 20px;">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <!-- Tela 4: Jogo em Andamento -->
+                <div class="flow-row">
+                    <div class="tela-prototipo">
+                        <div class="tela-titulo">4. Partida em Andamento</div>
+                        <div class="tela-conteudo">
+                            <div class="game-info">
+                                <p><strong>Você (X)</strong> vs <strong>Maria (O)</strong></p>
+                            </div>
+                            <div class="player-turn">
+                                <p style="text-align: center; margin: 0;">Sua vez!</p>
+                            </div>
+                            <div class="game-board">
+                                <div class="cell x">X</div>
+                                <div class="cell o">O</div>
+                                <div class="cell"></div>
+                                <div class="cell"></div>
+                                <div class="cell x">X</div>
+                                <div class="cell"></div>
+                                <div class="cell"></div>
+                                <div class="cell o">O</div>
+                                <div class="cell"></div>
+                            </div>
+                            <p style="text-align: center; font-size: 12px; margin-top: 10px;">Clique em uma célula vazia para jogar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <!-- Tela 5: Resultado -->
+                <div class="flow-row">
+                    <div class="tela-prototipo">
+                        <div class="tela-titulo">5. Resultado da Partida</div>
+                        <div class="tela-conteudo">
+                            <div class="result-message result-winner">
+                                🎉 Você Venceu!
+                            </div>
+                            <div class="game-board" style="margin: 20px 0;">
+                                <div class="cell x">X</div>
+                                <div class="cell o">O</div>
+                                <div class="cell"></div>
+                                <div class="cell">X</div>
+                                <div class="cell x">X</div>
+                                <div class="cell o">O</div>
+                                <div class="cell"></div>
+                                <div class="cell o">O</div>
+                                <div class="cell x">X</div>
+                            </div>
+                            <div style="text-align: center; margin-top: 20px;">
+                                <button class="btn">Jogar Novamente</button>
+                                <button class="btn btn-secondary" style="margin-top: 10px;">Voltar ao Lobby</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cenário alternativo: Empate -->
+            <div style="margin-top: 50px; padding-top: 30px; border-top: 2px dashed #667eea;">
+                <h3 style="text-align: center; color: #764ba2; margin-bottom: 20px;">Cenário Alternativo: Empate</h3>
+                <div class="flow-row">
+                    <div class="tela-prototipo">
+                        <div class="tela-titulo">Resultado: Empate</div>
+                        <div class="tela-conteudo">
+                            <div class="result-message result-draw">
+                                🤝 Empate!
+                            </div>
+                            <div class="game-board" style="margin: 20px 0;">
+                                <div class="cell x">X</div>
+                                <div class="cell o">O</div>
+                                <div class="cell x">X</div>
+                                <div class="cell o">O</div>
+                                <div class="cell x">X</div>
+                                <div class="cell o">O</div>
+                                <div class="cell o">O</div>
+                                <div class="cell x">X</div>
+                                <div class="cell x">X</div>
+                            </div>
+                            <div style="text-align: center; margin-top: 20px;">
+                                <button class="btn">Jogar Novamente</button>
+                                <button class="btn btn-secondary" style="margin-top: 10px;">Voltar ao Lobby</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</body>
+</html>
