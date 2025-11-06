@@ -65,7 +65,6 @@ function ResultPage() {
     );
   }
 
-  const isPlayer1 = match.player1_id === currentUserId;
   const isDraw = match.status === 'finished' && !match.winner_id;
   const isWinner = match.winner_id === currentUserId;
 
