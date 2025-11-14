@@ -260,17 +260,6 @@ function LobbyPage() {
         .select()
         .single();
 
-      if (updateError) {
-        console.error('Update error:', updateError);
-        // Verificar se foi porque outro jogador entrou primeiro
-        if (updateError.code === 'PGRST116' || updateError.message?.includes('no rows')) {
-          alert('Esta partida já foi preenchida por outro jogador');
-        } else {
-          throw updateError;
-        }
-        return;
-      }
-
       console.log('Successfully joined match:', updatedMatch);
       navigate(`/game/${match.id}`);
     } catch (err: any) {

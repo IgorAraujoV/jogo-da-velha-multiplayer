@@ -663,8 +663,9 @@ Configure no Dashboard da Vercel:
 
 #### URLs de Produção
 
-- Preview: `https://jogo-da-velha-multiplayer-{hash}.vercel.app`
-- Production: `https://jogo-da-velha-multiplayer-{hash}.vercel.app`
+- **🎮 Jogo Publicado**: [https://jogo-da-velha-multiplayer-jxwyqews6-igors-projects-93173a7d.vercel.app](https://jogo-da-velha-multiplayer-jxwyqews6-igors-projects-93173a7d.vercel.app)
+- **💻 Codespace**: [https://supreme-goldfish-ppg79qrgrq6h94p.github.dev/](https://supreme-goldfish-ppg79qrgrq6h94p.github.dev/)
+- **📦 Repositório**: [https://github.com/IgorAraujoV/jogo-da-velha-multiplayer](https://github.com/IgorAraujoV/jogo-da-velha-multiplayer)
 
 ### Build Local
 
@@ -719,4 +720,7 @@ Gera arquivos otimizados em `dist/`:
 ---
 
 **Desenvolvido como parte do curso de Software em Nuvem da Unifor**
+
+
+
 
